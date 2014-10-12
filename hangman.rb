@@ -3,7 +3,7 @@ require_relative 'computer_player'
 
 class Hangman
   
-  attr_reader :turns_taken, :guessing_player, :checking_player
+  attr_reader :turns_taken, :guessing_player, :checking_player, :word_so_far
   
   def initialize(guessing_player, checking_player)
     @guessing_player = guessing_player
@@ -12,12 +12,13 @@ class Hangman
   end
   
   def run
-    checking_player.pick_secret_word
+    secret_word = checking_player.pick_secret_word
+    guessing_player.receive_secret_length(secret_word)
+    puts checking_player.word_so_far
     
     until game_over
-      checking_player.prompt_guess
-      guess = guessing_player.guess
-      checking_player.handle_guess(guess)
+      guess = guessing_player.guess_letter
+      checking_player.check_guess(guess)
       @turns_taken += 1
     end
     
@@ -29,9 +30,9 @@ class Hangman
   end
   
   def win?
-    if checking_player.secret_word == checking_player.word_so_far
+    unless checking_player.word_so_far.split("").include?("_")
       puts checking_player.word_so_far
-      p "#{guessing_player.name} wins!"
+      puts"#{guessing_player.name} wins!"
       return true
     end
     
@@ -39,23 +40,35 @@ class Hangman
   end
   
   def lose?
-    if turns_taken >= 20
-      p "#{guessing_player.name} loses!"
+    if turns_taken >= 27
+      puts "#{guessing_player.name} loses!"
       return true
     end
     
     false
   end
     
-    
-  
 end
 
 
 jonny = HumanPlayer.new("jonny")
 compy = ComputerPlayer.new("compy")
 
-hangman = Hangman.new(jonny, compy)
+hangman = Hangman.new(compy, jonny)
 
 hangman.run
+
+
+# def something
+#   input = gets.chomp
+#   if input == "cool"
+#     puts "hooray"
+#   else
+#     raise puts "write something else"
+#   end
+# rescue
+#   retry
+# end
+#
+# something
 

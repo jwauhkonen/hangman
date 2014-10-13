@@ -21,7 +21,7 @@ class HumanPlayer
     @secret_word.dup
   end
 
-  def guess_letter
+  def guess_letter(word_so_far)
     puts "letters guessed: #{guessed_letters}"
     guess = gets.chomp
     

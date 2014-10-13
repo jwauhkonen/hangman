@@ -17,7 +17,7 @@ class Hangman
     puts checking_player.word_so_far
     
     until game_over
-      guess = guessing_player.guess_letter
+      guess = guessing_player.guess_letter(word_so_far)
       checking_player.check_guess(guess)
       @turns_taken += 1
     end
@@ -47,28 +47,19 @@ class Hangman
     
     false
   end
+  
+  def word_so_far
+    checking_player.word_so_far
+  end
     
 end
 
 
 jonny = HumanPlayer.new("jonny")
 compy = ComputerPlayer.new("compy")
+tandy = ComputerPlayer.new("tandy")
 
 hangman = Hangman.new(compy, jonny)
 
 hangman.run
-
-
-# def something
-#   input = gets.chomp
-#   if input == "cool"
-#     puts "hooray"
-#   else
-#     raise puts "write something else"
-#   end
-# rescue
-#   retry
-# end
-#
-# something
 
